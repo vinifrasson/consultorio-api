@@ -1,17 +1,19 @@
 package br.com.uniamerica.api.controller;
 
 import br.com.uniamerica.api.entity.Agenda;
+import br.com.uniamerica.api.entity.Especialidade;
 import br.com.uniamerica.api.entity.Paciente;
 import br.com.uniamerica.api.repository.AgendaRepository;
 import br.com.uniamerica.api.repository.PacienteRepository;
+import br.com.uniamerica.api.service.EspecialidadeService;
+import br.com.uniamerica.api.service.PacienteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,26 +28,54 @@ import java.util.List;
 public class PacienteController {
 
     @Autowired
-    public PacienteRepository pacienteRepository;
+    public PacienteService pacienteService;
 
-    /**
-     *
-     * @return
-     */
-    @GetMapping
-    public ResponseEntity<List<Paciente>> listAllPacientes(){
-        List<Paciente> pacientes = pacienteRepository.findAll();
-        return new ResponseEntity<>(pacienteRepository.findAll(), HttpStatus.OK) ;
+    @GetMapping("/{idPaciente}")
+    public ResponseEntity<Paciente> findById(
+            @PathVariable("idPaciente") Long idPaciente
+    ) {
+        return ResponseEntity.ok().body(this.pacienteService.findById(idPaciente).get());
     }
 
-    /**
-     *
-     * @param paciente
-     * @return
-     */
+    @GetMapping
+    public ResponseEntity<Page<Paciente>> listByAllPages(Pageable pageable) {
+        return ResponseEntity.ok().body(this.pacienteService.listAll(pageable));
+    }
+
+
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody Paciente paciente){
-        pacienteRepository.save(paciente);
-        return new ResponseEntity<>("Registro Cadastrado", HttpStatus.OK);
+    public ResponseEntity<?> insert(@RequestBody Paciente paciente) {
+        try {
+            this.pacienteService.insert(paciente);
+            return ResponseEntity.ok().body("Paciente cadastrada com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/{idPaciente}")
+    public ResponseEntity<?> update
+            (@RequestBody Paciente paciente,
+             @PathVariable Long idPaciente) {
+        try {
+            this.pacienteService.update(idPaciente ,paciente);
+            return ResponseEntity.ok().body("Paciente atualizada com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
+    @PostMapping("/status/{idPaciente}")
+    public ResponseEntity<?> updateStatus
+            (@RequestBody Paciente paciente,
+             @PathVariable Long idPaciente) {
+        try {
+            this.pacienteService.updateStatus(idPaciente ,paciente);
+            return ResponseEntity.ok().body("Paciente desativada com sucesso!");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

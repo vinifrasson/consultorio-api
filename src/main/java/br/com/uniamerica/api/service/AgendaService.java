@@ -1,6 +1,7 @@
 package br.com.uniamerica.api.service;
 
 import br.com.uniamerica.api.entity.Agenda;
+import br.com.uniamerica.api.entity.Especialidade;
 import br.com.uniamerica.api.entity.StatusAgenda;
 import br.com.uniamerica.api.repository.AgendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,5 +69,25 @@ public class AgendaService {
         agenda.setStatus(statusAgenda);
         agendaRepository.save(agenda);
     }
+    
+    public void validaDisponibilidade(Agenda newAgenda, Agenda oldAgenda){
+        if(newAgenda.getDataDe()  && newAgenda.getDataAte() == oldAgenda.getDataDe() && oldAgenda.getDataAte()){
+            throw new RuntimeException("Horário não disponível");
+        }
+    }
 
+    @Transactional
+    public void insert(Agenda agenda){
+        this.agendaRepository.save(agenda);
+    }
+
+    @Transactional
+    public void update(Long id, Agenda agenda){
+        if (id == agenda.getId()) {
+            this.agendaRepository.save(agenda);
+        }
+        else {
+            throw new RuntimeException();
+        }
+    }
 }

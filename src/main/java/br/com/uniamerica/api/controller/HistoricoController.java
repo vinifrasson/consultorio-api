@@ -28,10 +28,7 @@ public class HistoricoController {
     @Autowired
     public HistoricoRepository historicoRepository;
 
-    /**
-     *
-     * @return
-     */
+
     @GetMapping
     public ResponseEntity<List<Historico>> listAllHistorico(){
         return new ResponseEntity<>(historicoRepository.findAll(), HttpStatus.OK) ;
