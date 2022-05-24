@@ -46,7 +46,7 @@ public class AgendaController {
         }
     }
 
-    @PostMapping("{idAgenda}")
+    @PutMapping("{idAgenda}")
     public ResponseEntity<?> update(
             @RequestBody Agenda agenda,
             @PathVariable Long idAgenda
@@ -59,7 +59,7 @@ public class AgendaController {
         }
     }
 
-    @PostMapping("/status/{idAgenda}")
+    @PutMapping("/status/{idAgenda}")
     public ResponseEntity<?> updateStatus(
             @RequestBody Agenda agenda,
             @PathVariable Long idAgenda

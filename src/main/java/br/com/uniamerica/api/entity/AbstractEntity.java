@@ -35,25 +35,18 @@ public abstract class AbstractEntity {
     @Column(name = "excluido")
     private LocalDateTime excluido;
 
-    /**
-     *
-     * @param id
-     */
+
     public AbstractEntity(Long id){
         this.id = id;
     }
 
-    /**
-     * Método executado antes da execução repository.save
-     */
+
     @PrePersist
     public void dataCadastro(){
         this.cadastro = LocalDateTime.now();
     }
 
-    /**
-     * Método executado antes da execução repository.update
-     */
+
     @PreUpdate
     public void dataAtualizacao(){
         this.atualizado = LocalDateTime.now();

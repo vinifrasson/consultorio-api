@@ -43,4 +43,5 @@ public class Agenda extends AbstractEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Medico medico;
 
+
 }

@@ -52,7 +52,7 @@ public class EspecialidadeController {
     }
 
 
-    @PostMapping("/{idEspecialidade}")
+    @PutMapping("/{idEspecialidade}")
     public ResponseEntity<?> update
             (@RequestBody Especialidade especialidade,
              @PathVariable Long idEspecialidade) {
@@ -65,7 +65,7 @@ public class EspecialidadeController {
     }
 
 
-    @PostMapping("/status/{idEspecialidade}")
+    @PutMapping("/status/{idEspecialidade}")
     public ResponseEntity<?> updateStatus
             (@RequestBody Especialidade especialidade,
              @PathVariable Long idEspecialidade) {

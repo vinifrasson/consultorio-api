@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Eduardo Sganderla
  *
@@ -20,5 +22,6 @@ public interface AgendaRepository extends JpaRepository<Agenda, Long> {
             "SET agenda.excluido = now() " +
             "WHERE agenda.id = :agenda")
     public void updateStatus(@Param("agenda") Long idAgenda);
+    public boolean DataDisponivel(@Param("dataDe") LocalDateTime dataDe, @Param("dataAte") LocalDateTime dataAte);
 
 }
